@@ -8,7 +8,7 @@ from quiz import Quiz  # quiz.py에 정의한 Quiz 클래스를 가져옵니다.
 
 
 class QuizGame:  # QuizGame 클래스는 메뉴, 점수, 저장 기능 등 게임 전체를 관리합니다.
-    STATE_FILE = Path("state.json")  # 게임 상태를 저장할 파일 경로를 미리 정해 둡니다.
+    STATE_FILE = Path(__file__).resolve().parent.parent / "state.json"  # src 안에서 실행해도 프로젝트 루트의 state.json을 바라보게 합니다.
 
     def __init__(self) -> None:  # 객체가 처음 만들어질 때 기본값과 저장 데이터를 준비합니다.
         self.quizzes: list[Quiz] = []  # 퀴즈 목록을 담을 빈 리스트를 먼저 준비합니다.
