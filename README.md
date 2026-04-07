@@ -43,7 +43,7 @@
 ```bash
 git clone <저장소_URL>
 cd E1-2
-python main.py
+python src/main.py
 ```
 
 현재 기본 골격은 아래와 같은 메뉴 흐름으로 실행됩니다.
@@ -101,11 +101,12 @@ python main.py
 ```text
 E1-2/
 ├─ README.md
-├─ main.py
-├─ quiz.py
-├─ quiz_game.py
 ├─ docs/
 │  └─ system-architecture.md
+├─ src/
+│  ├─ main.py
+│  ├─ quiz.py
+│  └─ quiz_game.py
 ├─ state.json
 └─ 요구사항/
    └─ Readme.md
@@ -113,9 +114,9 @@ E1-2/
 
 핵심 파일 역할:
 
-- `main.py`: 프로그램 시작점
-- `quiz.py`: 개별 퀴즈를 표현하는 `Quiz` 클래스
-- `quiz_game.py`: 전체 흐름을 관리하는 `QuizGame` 클래스
+- `src/main.py`: 프로그램 시작점
+- `src/quiz.py`: 개별 퀴즈를 표현하는 `Quiz` 클래스
+- `src/quiz_game.py`: 전체 흐름을 관리하는 `QuizGame` 클래스
 - `docs/system-architecture.md`: 시스템 구조도와 실행 흐름 설명 문서
 - `state.json`: 퀴즈 목록, 최고 점수, 플레이 횟수를 저장하는 데이터 파일
 - `요구사항/Readme.md`: 미션 원문 문서
@@ -137,9 +138,10 @@ docs/
 ```text
 E1-2/
 ├─ README.md
-├─ main.py
-├─ quiz.py
-├─ quiz_game.py
+├─ src/
+│  ├─ main.py
+│  ├─ quiz.py
+│  └─ quiz_game.py
 ├─ state.json
 └─ 요구사항/
    └─ Readme.md
