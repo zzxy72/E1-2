@@ -1,14 +1,13 @@
 # json 모듈은 파이썬 데이터를 JSON 파일로 저장하거나 다시 읽어 올 때 사용합니다.
-import json  # state.json 파일을 읽고 쓰기 위해 가져옵니다.
-# Path는 파일 경로를 더 안전하고 읽기 쉽게 다루게 도와주는 도구입니다.
-from pathlib import Path  # state.json 경로를 관리하기 위해 가져옵니다.
+import json  # state.json 파일을 읽고 쓰기 위해 사용합니다.
+from pathlib import Path  # 파일 경로를 객체처럼 다루기 위해 사용합니다.
 
 # Quiz 클래스는 퀴즈 한 문제를 표현하므로 게임 전체에서 꼭 필요합니다.
 from quiz import Quiz  # quiz.py에 정의한 Quiz 클래스를 가져옵니다.
 
 
-class QuizGame:  # QuizGame 클래스는 메뉴, 점수, 저장 기능 등 게임 전체를 관리합니다.
-    STATE_FILE = Path(__file__).resolve().parent.parent / "state.json"  # src 안에서 실행해도 프로젝트 루트의 state.json을 바라보게 합니다.
+class QuizGame:  # QuizGame 클래스는 메뉴, 점수, 저장 상태를 관리합니다.
+    STATE_FILE = Path(__file__).resolve().parent / "state.json"  # src/state.json을 사용합니다.
 
     def __init__(self) -> None:  # 객체가 처음 만들어질 때 기본값과 저장 데이터를 준비합니다.
         self.quizzes: list[Quiz] = []  # 퀴즈 목록을 담을 빈 리스트를 먼저 준비합니다.
