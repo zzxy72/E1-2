@@ -46,7 +46,7 @@ class Quiz:  # Quiz 클래스는 퀴즈 한 문제의 정보를 하나로 묶어
         return {  # 아래 중괄호 안에 저장할 데이터 구조를 만듭니다.
             "question": self.question,  # 문제 문장을 question 키로 저장합니다.
             "choices": list(self.choices),  # 선택지 리스트를 choices 키로 복사해 저장합니다.
-            "answer": self.answer,  # 정답 번호를 answer 키로 저장합니다.
+            "answer": self.answer,  
         }  # 완성된 딕셔너리를 반환합니다.
 
     @classmethod  # 클래스 메서드는 객체가 없어도 클래스 이름으로 호출할 수 있는 메서드입니다.
