@@ -28,7 +28,13 @@ class Quiz:  # Quiz 클래스는 퀴즈 한 문제의 정보를 하나로 묶어
             print(f"[문제 {number}]")  # 예를 들어 [문제 1] 같은 형식으로 표시합니다.
         print(self.question)  # 실제 문제 문장을 화면에 출력합니다.
         for index, choice in enumerate(self.choices, start=1):  # 선택지에 1번부터 번호를 붙여 하나씩 꺼냅니다.
-            print(f"{index}. {choice}")  # 번호와 선택지 문장을 함께 출력합니다.
+            print(f"{index}. {choice}")  # 번호와 선택지 문장을 함께 출력합니다.    
+        # 왜 enumerate를 권장? 코드 간결, 실수 방지( x = 1, ... x += 1 ) 
+        # index = 1  # start=1 설정
+        # for choice in self.choices:
+        #   루프 몸체
+        #    print(f"{index}: {choice}")
+        #    index += 1  # 매 반복마다 인덱스를 직접 증가시킴
 
     def is_correct(self, user_answer: int) -> bool:  # 사용자가 고른 번호가 정답인지 확인하는 메서드입니다.
         return user_answer == self.answer  # 사용자의 입력값과 정답 번호가 같으면 True를 반환합니다.
