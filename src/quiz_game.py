@@ -46,7 +46,7 @@ class QuizGame:  # QuizGame 클래스는 메뉴, 점수, 저장 상태를 관리
         ] 
 
     def build_state_data(self) -> dict[str, object]:  # 현재 게임 상태를 저장용 딕셔너리로 만드는 메서드입니다.
-        return {  # 아래 구조가 그대로 state.json 파일에 저장됩니다.
+        return {  # 아래 구조가 state.json 
             "quizzes": [quiz.to_dict() for quiz in self.quizzes],  # 모든 Quiz 객체를 딕셔너리로 바꿔 quizzes 키에 담습니다.
             "best_score": self.best_score,  # 현재 최고 점수를 best_score 키에 저장합니다.
             "play_count": self.play_count,  # 총 플레이 횟수를 play_count 키에 저장합니다.
@@ -90,20 +90,21 @@ class QuizGame:  # QuizGame 클래스는 메뉴, 점수, 저장 상태를 관리
         except OSError:  # 디스크 문제나 권한 문제처럼 파일 저장 실패 상황을 처리합니다.
             print("\n[주의] state.json 파일 저장에 실패했습니다.")  # 저장 실패 사실을 사용자에게 알려 줍니다.
 
-    def handle_input_interrupt(self) -> None:  # Ctrl+C나 EOF 입력처럼 입력이 중단되었을 때 호출하는 메서드입니다.
-        print("\n[주의] 입력이 중단되었습니다. 현재 상태를 저장한 뒤 안전하게 종료합니다.")  # 비정상 종료 대신 안전 종료를 안내합니다.
+    def handle_input_interrupt(self) -> None:  # Ctrl+C나 EOF 입력처럼 입력이 중단되었을 때 
+        print("\n[주의] 입력이 중단되었습니다. 현재 상태를 저장한 뒤 안전하게 종료합니다.")  
         self.save_state()  # 지금까지의 상태를 가능한 범위에서 파일에 저장합니다.
         self.is_running = False  # 게임 루프를 멈추도록 값을 False로 바꿉니다.
 
-    def get_non_empty_text(self, prompt_message: str) -> str | None:  # 비어 있지 않은 문자열 입력을 받을 때 사용하는 공통 메서드입니다.
-        while self.is_running:  # 게임이 실행 중인 동안에는 올바른 입력이 들어올 때까지 계속 물어봅니다.
+    # 비어 있지 않은 문자열 입력을 받을 때 사용하는 공통 메서드입니다.
+    def get_non_empty_text(self, prompt_message: str) -> str | None:  
+        while self.is_running:  # 게임이 실행 중인 동안에는 올바른 입력이 들어올 때까지 계속.
             try:  # input 함수에서 발생할 수 있는 예외를 안전하게 처리하기 위해 try를 사용합니다.
                 user_input = input(prompt_message).strip()  # 입력을 받고 앞뒤 공백을 제거합니다.
             except (KeyboardInterrupt, EOFError):  # Ctrl+C나 EOF가 발생하면 이 블록으로 들어옵니다.
-                self.handle_input_interrupt()  # 안전 종료 처리 메서드를 호출합니다.
-                return None  # 더 이상 입력을 받을 수 없으므로 None을 반환합니다.
+                self.handle_input_interrupt()  # 안전 종료 처리.
+                return None  # 더 이상 입력을 받을 수 없으므로 None을 반환.
             if user_input == "":  # 아무 글자도 입력하지 않고 엔터만 누른 경우를 검사합니다.
-                print("[주의] 빈 입력은 사용할 수 없습니다. 다시 입력해 주세요.")  # 빈 입력이 허용되지 않음을 안내합니다.
+                print("[주의] 빈 입력은 사용할 수 없습니다. 다시 입력해 주세요.") 
                 continue  # 올바른 값을 받을 때까지 다시 입력받습니다.
             return user_input  # 비어 있지 않은 정상 문자열이면 바로 반환합니다.
         return None  # 게임이 종료 상태라면 None을 반환해 호출한 쪽이 멈출 수 있게 합니다.
