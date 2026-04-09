@@ -18,32 +18,32 @@ class QuizGame:  # QuizGame 클래스는 메뉴, 점수, 저장 상태를 관리
 
     def get_default_quizzes(self) -> list[Quiz]:  # 파일이 없거나 손상되었을 때 사용할 기본 퀴즈를 만듭니다.
         return [  # 아래에 Quiz 객체 5개를 넣은 리스트를 반환합니다.
-            Quiz(  # 첫 번째 기본 퀴즈를 만듭니다.
-                question="Python에서 문자열 자료형의 이름은 무엇인가요?",  # 첫 번째 문제 문장을 넣습니다.
-                choices=["str", "int", "list", "bool"],  # 첫 번째 문제의 4개 선택지를 넣습니다.
-                answer=1,  # 첫 번째 문제의 정답은 1번 선택지입니다.
-            ),  # 첫 번째 Quiz 객체 정의를 마칩니다.
-            Quiz(  # 두 번째 기본 퀴즈를 만듭니다.
-                question="if 문은 주로 어떤 상황에서 사용하나요?",  # 두 번째 문제 문장을 넣습니다.
-                choices=["조건에 따라 다른 동작을 할 때", "무조건 같은 동작만 할 때", "파일만 읽을 때", "주석만 작성할 때"],  # 두 번째 문제의 선택지를 넣습니다.
-                answer=1,  # 두 번째 문제의 정답은 1번 선택지입니다.
-            ),  # 두 번째 Quiz 객체 정의를 마칩니다.
-            Quiz(  # 세 번째 기본 퀴즈를 만듭니다.
-                question="list 자료형의 특징으로 가장 알맞은 것은 무엇인가요?",  # 세 번째 문제 문장을 넣습니다.
-                choices=["순서가 있고 여러 값을 저장할 수 있다", "항상 숫자만 저장할 수 있다", "반드시 4개 값만 들어간다", "한 번 만들면 바꿀 수 없다"],  # 세 번째 문제의 선택지를 넣습니다.
-                answer=1,  # 세 번째 문제의 정답은 1번 선택지입니다.
-            ),  # 세 번째 Quiz 객체 정의를 마칩니다.
-            Quiz(  # 네 번째 기본 퀴즈를 만듭니다.
-                question="for 문은 보통 무엇을 반복할 때 사용하나요?",  # 네 번째 문제 문장을 넣습니다.
-                choices=["정해진 횟수나 목록을 차례대로 처리할 때", "컴퓨터를 종료할 때", "정답을 무조건 맞힐 때", "파일 이름을 바꿀 때만"],  # 네 번째 문제의 선택지를 넣습니다.
-                answer=1,  # 네 번째 문제의 정답은 1번 선택지입니다.
-            ),  # 네 번째 Quiz 객체 정의를 마칩니다.
-            Quiz(  # 다섯 번째 기본 퀴즈를 만듭니다.
-                question="JSON 파일을 이 프로젝트에서 사용하는 가장 큰 이유는 무엇인가요?",  # 다섯 번째 문제 문장을 넣습니다.
-                choices=["프로그램을 다시 실행해도 데이터를 남기기 위해", "화면 색을 바꾸기 위해", "파이썬 설치를 대신하기 위해", "키보드를 연결하기 위해"],  # 다섯 번째 문제의 선택지를 넣습니다.
-                answer=1,  # 다섯 번째 문제의 정답은 1번 선택지입니다.
-            ),  # 다섯 번째 Quiz 객체 정의를 마칩니다.
-        ]  # 기본 퀴즈 리스트 반환을 마칩니다.
+            Quiz(  
+                question="Python에서 문자열 자료형의 이름은 무엇인가요?",  
+                choices=["str", "int", "list", "bool"],  
+                answer=1, 
+            ),  
+            Quiz(  
+                question="if 문은 주로 어떤 상황에서 사용하나요?", 
+                choices=["조건에 따라 다른 동작을 할 때", "무조건 같은 동작만 할 때", "파일만 읽을 때", "주석만 작성할 때"], 
+                answer=1,  
+            ),  
+            Quiz(  
+                question="list 자료형의 특징으로 가장 알맞은 것은 무엇인가요?", 
+                choices=["순서가 있고 여러 값을 저장할 수 있다", "항상 숫자만 저장할 수 있다", "반드시 4개 값만 들어간다", "한 번 만들면 바꿀 수 없다"], 
+                answer=1, 
+            ), 
+            Quiz( 
+                question="for 문은 보통 무엇을 반복할 때 사용하나요?", 
+                choices=["정해진 횟수나 목록을 차례대로 처리할 때", "컴퓨터를 종료할 때", "정답을 무조건 맞힐 때", "파일 이름을 바꿀 때만"], 
+                answer=1, 
+            ),  
+            Quiz(  
+                question="JSON 파일을 이 프로젝트에서 사용하는 가장 큰 이유는 무엇인가요?", 
+                choices=["프로그램을 다시 실행해도 데이터를 남기기 위해", "화면 색을 바꾸기 위해", "파이썬 설치를 대신하기 위해", "키보드를 연결하기 위해"], 
+                answer=1, 
+            ),  
+        ] 
 
     def build_state_data(self) -> dict[str, object]:  # 현재 게임 상태를 저장용 딕셔너리로 만드는 메서드입니다.
         return {  # 아래 구조가 그대로 state.json 파일에 저장됩니다.
@@ -53,22 +53,22 @@ class QuizGame:  # QuizGame 클래스는 메뉴, 점수, 저장 상태를 관리
         }  # 완성된 상태 딕셔너리를 반환합니다.
 
     def load_state(self) -> None:  # state.json 파일에서 저장된 데이터를 읽어 오는 메서드입니다.
-        if not self.STATE_FILE.exists():  # 저장 파일이 아직 없다면 처음 실행한 상황으로 판단합니다.
+        if not self.STATE_FILE.exists():  # 저장 파일이 아직 없다면.
             self.quizzes = self.get_default_quizzes()  # 기본 퀴즈 5개를 메모리에 준비합니다.
-            self.best_score = 0  # 최고 점수는 아직 없으므로 0으로 둡니다.
-            self.play_count = 0  # 플레이 기록도 아직 없으므로 0으로 둡니다.
-            print("\n[안내] 저장 파일이 없어 기본 퀴즈로 시작합니다.")  # 처음 시작임을 사용자에게 알립니다.
+            self.best_score = 0  # 최고 점수, 플레이 기록 아직 없으므로 0으로 둡니다.
+            self.play_count = 0  
+            print("\n[안내] 저장 파일이 없어 기본 퀴즈로 시작합니다.")
             self.save_state()  # 바로 state.json 파일을 만들어 다음 실행에서도 사용할 수 있게 합니다.
-            return  # 파일이 없던 경우의 처리를 마쳤으므로 메서드를 끝냅니다.
-        try:  # 파일 읽기 과정에서 생길 수 있는 오류를 안전하게 처리하기 위해 try를 시작합니다.
+            return 
+        try:  # 파일 읽기 과정에서 생길 수 있는 오류를 안전하게 처리하기 위해 try를 시작.
             with self.STATE_FILE.open("r", encoding="utf-8") as file:  # UTF-8 방식으로 state.json 파일을 엽니다.
                 data = json.load(file)  # 파일 안의 JSON 내용을 파이썬 딕셔너리로 읽어 옵니다.
             raw_quizzes = data.get("quizzes", [])  # quizzes 키에서 퀴즈 목록을 가져오고 없으면 빈 리스트를 사용합니다.
-            if not isinstance(raw_quizzes, list):  # 퀴즈 목록이 리스트가 아니면 잘못된 저장 형식입니다.
-                raise ValueError("quizzes 값은 리스트여야 합니다.")  # 저장 구조가 잘못되었음을 오류로 알려 줍니다.
+            if not isinstance(raw_quizzes, list):  
+                raise ValueError("quizzes 값은 리스트여야 합니다.")  # 키는 있는데 데이터 형식이 잘못된 경우 (위험)
             self.quizzes = [Quiz.from_dict(item) for item in raw_quizzes]  # 읽어 온 각 퀴즈 딕셔너리를 Quiz 객체로 바꿉니다.
-            self.best_score = int(data.get("best_score", 0))  # 최고 점수를 읽어 오고 없으면 0을 사용합니다.
-            self.play_count = int(data.get("play_count", 0))  # 플레이 횟수를 읽어 오고 없으면 0을 사용합니다.
+            self.best_score = int(data.get("best_score", 0))  
+            self.play_count = int(data.get("play_count", 0))  
             if not self.quizzes:  # 파일은 있었지만 퀴즈가 하나도 없는 경우를 따로 처리합니다.
                 print("\n[주의] 저장된 퀴즈가 없어 기본 퀴즈를 다시 준비합니다.")  # 기본 퀴즈로 복구함을 안내합니다.
                 self.quizzes = self.get_default_quizzes()  # 기본 퀴즈를 다시 메모리에 채워 넣습니다.
