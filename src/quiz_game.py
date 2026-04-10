@@ -96,9 +96,10 @@ class QuizGame:
         state_data = self.build_state_data()  # 먼저 저장할 데이터를 딕셔너리 형태로 정리합니다.
         try:  # 파일 저장 중 문제가 생겨도 프로그램이 갑자기 죽지 않도록 try를 사용합니다.
             with self.STATE_FILE.open("w", encoding="utf-8") as file:  # state.json 파일을 쓰기 모드와 UTF-8로 엽니다.
-                json.dump(state_data, file, ensure_ascii=False, indent=4)  # 한글이 깨지지 않도록 JSON 데이터를 보기 좋게 저장합니다.
-        except OSError:  # 디스크 문제나 권한 문제처럼 파일 저장 실패 상황을 처리합니다.
-            print("\n[주의] state.json 파일 저장에 실패했습니다.")  # 저장 실패 사실을 사용자에게 알려 줍니다.
+                json.dump(state_data, file, ensure_ascii=False, indent=4)  
+                # 한글, 들여쓰기 4 설정.
+        except OSError:  # 디스크 문제나 권한 문제처럼 파일 저장 실패 상황.
+            print("\n[주의] state.json 파일 저장에 실패했습니다.")  
 
     def handle_input_interrupt(self) -> None:  # Ctrl+C나 EOF 입력처럼 입력이 중단되었을 때 
         print("\n[주의] 입력이 중단되었습니다. 현재 상태를 저장한 뒤 안전하게 종료합니다.")  
