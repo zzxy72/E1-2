@@ -54,6 +54,7 @@ class QuizGame:
                 answer=1, 
             ),  
         ] 
+# state.json 파일 처리 관련.
 
     def build_state_data(self) -> dict[str, object]:  # 현재 게임 상태를 저장용 딕셔너리로 만드는 메서드입니다.
         return {  # 아래 구조가 state.json 
@@ -100,13 +101,15 @@ class QuizGame:
                 # 한글, 들여쓰기 4 설정.
         except OSError:  # 디스크 문제나 권한 문제처럼 파일 저장 실패 상황.
             print("\n[주의] state.json 파일 저장에 실패했습니다.")  
+############## state.json 파일 처리 관련 끝 ##############
 
+# 입력 처리 관련
     def handle_input_interrupt(self) -> None:  # Ctrl+C나 EOF 입력처럼 입력이 중단되었을 때 
         print("\n[주의] 입력이 중단되었습니다. 현재 상태를 저장한 뒤 안전하게 종료합니다.")  
         self.save_state()  # 지금까지의 상태를 가능한 범위에서 파일에 저장합니다.
         self.is_running = False  # 게임 루프를 멈추도록 값을 False로 바꿉니다.
 
-    # 문자열 입력을 받을 때 사용하는 공통 메서드입니다.
+    ## 문자열 입력을 받을 때 사용하는 공통 메서드입니다.
     def get_non_empty_text(self, prompt_message: str) -> str | None:  
         while self.is_running:  # 게임이 실행 중인 동안에는 올바른 입력이 들어올 때까지 계속.
             try:  # input 함수에서 발생할 수 있는 예외를 안전하게 처리하기 위해 try를 사용합니다.
@@ -120,7 +123,7 @@ class QuizGame:
             return user_input  # 정상 문자열이면 바로 반환합니다.
         return None  # 게임이 종료 상태라면 None을 반환해 호출한 쪽이 멈출 수 있게 합니다.
 
-    # 일정 범위 안의 숫자 입력을 받을 때 사용하는 메서드입니다.
+    ## 일정 범위 안의 숫자 입력을 받을 때 사용하는 메서드입니다.
     def get_number_input(self, prompt_message: str, min_value: int, max_value: int) -> int | None:  
         while self.is_running:  # 게임이 실행 중인 동안에는 조건에 맞는 숫자가 들어올 때까지 반복합니다.
             text = self.get_non_empty_text(prompt_message)  # 문자열 입력을 공통 메서드로 받습니다.
@@ -136,7 +139,9 @@ class QuizGame:
                 continue  # 다시 입력받기 위해 반복합니다.
             return number  # 형식과 범위를 모두 통과한 숫자라면 반환합니다.
         return None  # None을 반환해 호출한 쪽이 멈출 수 있게 합니다.
+############## 입력 처리 관련 끝 ##############
 
+# 2. 메뉴 기능 관련
     def show_menu(self) -> None:  # 메인 메뉴 화면을 출력하는 메서드입니다.
         print("\n========================================") 
         print("         나만의 퀴즈 게임")  
@@ -168,6 +173,7 @@ class QuizGame:
             self.show_best_score()  # 최고 점수와 플레이 횟수를 출력합니다.
         elif choice == 5: 
             self.exit_program()  # 저장 후 종료하는 메서드를 호출합니다.
+###################### 메뉴 기능 관련 끝 ######################
 
     def play_quiz(self) -> None:  # 저장된 퀴즈를 순서대로 출제하는 메서드입니다.
         if not self.quizzes:  # 퀴즈가 하나도 없으면 게임을 진행할 수 없으므로 먼저 검사합니다.
