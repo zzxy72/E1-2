@@ -211,7 +211,7 @@ class QuizGame:
         self.save_state()  # 바뀐 최고 점수와 플레이 횟수를 파일에 저장합니다.
 ####################### 퀴즈 풀기 관련 끝 ######################
 
-# 사용자가 새 퀴즈를 직접 입력해 추가하는 메서드입니다.
+# 7. 퀴즈 추가 : 사용자가 새 퀴즈를 직접 입력해 추가하는 메서드입니다.
     def add_quiz(self) -> None: 
         print("\n[추가] 새로운 퀴즈를 추가합니다.")  
         question = self.get_non_empty_text("문제를 입력하세요: ")  
@@ -234,6 +234,7 @@ class QuizGame:
         self.quizzes.append(new_quiz)  # 검증을 통과한 새 퀴즈를 전체 퀴즈 목록에 추가합니다.
         self.save_state()  # 추가된 퀴즈를 state.json 파일에 바로 저장합니다.
         print("[완료] 퀴즈가 추가되었습니다.")
+####################### 퀴즈 추가 관련 끝 ######################
 
     def list_quizzes(self) -> None:  # 현재 저장된 퀴즈 목록을 화면에 출력하는 메서드입니다.
         if not self.quizzes:  # 퀴즈가 하나도 없으면 목록을 보여 줄 수 없으므로 먼저 검사합니다.
