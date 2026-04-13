@@ -103,13 +103,13 @@ class QuizGame:
             print("\n[주의] state.json 파일 저장에 실패했습니다.")  
 ############## state.json 파일 처리 관련 끝 ##############
 
-# 입력 처리 관련
+# 3. 공통 입력/예외 처리 기준
     def handle_input_interrupt(self) -> None:  # Ctrl+C나 EOF 입력처럼 입력이 중단되었을 때 
         print("\n[주의] 입력이 중단되었습니다. 현재 상태를 저장한 뒤 안전하게 종료합니다.")  
         self.save_state()  # 지금까지의 상태를 가능한 범위에서 파일에 저장합니다.
         self.is_running = False  # 게임 루프를 멈추도록 값을 False로 바꿉니다.
 
-    ## 문자열 입력을 받을 때 사용하는 공통 메서드입니다.
+    ### 문자열 입력을 받을 때 사용하는 공통 메서드입니다.
     def get_non_empty_text(self, prompt_message: str) -> str | None:  
         while self.is_running:  # 게임이 실행 중인 동안에는 올바른 입력이 들어올 때까지 계속.
             try:  # input 함수에서 발생할 수 있는 예외를 안전하게 처리하기 위해 try를 사용합니다.
@@ -123,7 +123,7 @@ class QuizGame:
             return user_input  # 정상 문자열이면 바로 반환합니다.
         return None  # 게임이 종료 상태라면 None을 반환해 호출한 쪽이 멈출 수 있게 합니다.
 
-    ## 일정 범위 안의 숫자 입력을 받을 때 사용하는 메서드입니다.
+    ### 일정 범위 안의 숫자 입력을 받을 때 사용하는 메서드입니다.
     def get_number_input(self, prompt_message: str, min_value: int, max_value: int) -> int | None:  
         while self.is_running:  # 게임이 실행 중인 동안에는 조건에 맞는 숫자가 들어올 때까지 반복합니다.
             text = self.get_non_empty_text(prompt_message)  # 문자열 입력을 공통 메서드로 받습니다.
