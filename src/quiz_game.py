@@ -56,7 +56,7 @@ class QuizGame:
         ] 
 ############## 기본 퀴즈 데이터 끝 ######################
 
-# state.json 파일 처리 관련.
+# 11. 파일 저장/불러오기 : state.json 파일 처리 관련.
     def build_state_data(self) -> dict[str, object]:  # 현재 게임 상태를 저장용 딕셔너리로 만드는 메서드입니다.
         return {  # 아래 구조가 state.json 
             "quizzes": [quiz.to_dict() for quiz in self.quizzes],  # 모든 Quiz 객체를 딕셔너리로 바꿔 quizzes 키에 담습니다.
@@ -102,7 +102,7 @@ class QuizGame:
                 # 한글, 들여쓰기 4 설정.
         except OSError:  # 디스크 문제나 권한 문제처럼 파일 저장 실패 상황.
             print("\n[주의] state.json 파일 저장에 실패했습니다.")  
-############## state.json 파일 처리 관련 끝 ##############
+############## 11. state.json 파일 처리 관련 끝 ##############
 
 # 3. 공통 입력/예외 처리 기준
     def handle_input_interrupt(self) -> None:  # Ctrl+C나 EOF 입력처럼 입력이 중단되었을 때 
