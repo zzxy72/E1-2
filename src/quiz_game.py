@@ -25,7 +25,7 @@ class QuizGame:
         self.play_count = 0  # 몇 번 플레이했는지 세는 값도 0으로 시작합니다.
         self.is_running = True  # 게임 루프를 계속 돌릴지 결정하는 값은 처음에 True입니다.
         self.load_state()  # 저장된 파일이 있으면 불러오고, 없으면 기본 퀴즈를 준비합니다.
-
+# 5.기본 퀴즈 데이터 
     def get_default_quizzes(self) -> list[Quiz]:  # 파일이 없거나 손상되었을 때 사용할 기본 퀴즈를 만듭니다.
         return [  # 아래에 Quiz 객체 5개를 넣은 리스트를 반환합니다.
             Quiz(  
@@ -54,8 +54,9 @@ class QuizGame:
                 answer=1, 
             ),  
         ] 
-# state.json 파일 처리 관련.
+############## 기본 퀴즈 데이터 끝 ######################
 
+# state.json 파일 처리 관련.
     def build_state_data(self) -> dict[str, object]:  # 현재 게임 상태를 저장용 딕셔너리로 만드는 메서드입니다.
         return {  # 아래 구조가 state.json 
             "quizzes": [quiz.to_dict() for quiz in self.quizzes],  # 모든 Quiz 객체를 딕셔너리로 바꿔 quizzes 키에 담습니다.
