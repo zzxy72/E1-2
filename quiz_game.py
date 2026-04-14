@@ -1,5 +1,6 @@
 # json 모듈은 파이썬 데이터를 JSON 파일로 저장하거나 다시 읽어 올 때 사용합니다.
 import json  # state.json 파일을 읽고 쓰기 위해 사용합니다.
+import random  # 퀴즈 순서를 섞을 때 사용합니다.
 import time  # 현재 시각을 문자열로 만들 때 사용합니다.
 from pathlib import Path  # 파일 경로를 객체처럼 다루기 위해 사용합니다.
 
@@ -209,11 +210,8 @@ class QuizGame:
         )
         if question_count is None:
             return
-        selected_quizzes = list(self.quizzes)  # 원본 퀴즈 목록을 건드리지 않기 위해 복사본을 만듭니다.
-        start_index = time.time_ns() % len(selected_quizzes)  # 현재 시간을 이용해 시작 위치를 정합니다.
-        selected_quizzes = selected_quizzes[start_index:] + selected_quizzes[:start_index]  # 시작 위치를 기준으로 순서를 바꿉니다.
-        selected_quizzes = selected_quizzes[:question_count]  # 원하는 문제 수만큼 앞에서 잘라 사용합니다.
-        print(f"\n[퀴즈] 퀴즈를 시작합니다. (시각 기준 {question_count}문제)") 
+        selected_quizzes = random.sample(self.quizzes, question_count)  # 원하는 개수만큼 무작위로 뽑습니다.
+        print(f"\n[퀴즈] 퀴즈를 시작합니다. (랜덤 {question_count}문제)") 
         score = 0  # 이번 라운드에서 얻은 총점을 저장합니다.
         correct_count = 0  # 정답 개수를 따로 세어 결과를 알기 쉽게 보여 줍니다.
         hint_count = 0  # 힌트를 사용한 횟수도 함께 기록합니다.
