@@ -171,14 +171,15 @@ class QuizGame:
         print("3. 퀴즈 목록") 
         print("4. 퀴즈 삭제")
         print("5. 점수 확인")  
-        print("6. 종료")  
+        print("6. 기록 확인")
+        print("7. 종료")  
         print("========================================") 
 
     def run(self) -> None:  # 프로그램 전체를 반복 실행하는 메인 루프 메서드입니다.
         print("\n[시작] 퀴즈 게임을 시작합니다.")  
         while self.is_running:  # 종료를 선택하기 전까지 메뉴를 계속 보여 주기 위해 반복.
             self.show_menu()  # 현재 사용할 수 있는 메뉴를 화면에 출력합니다.
-            choice = self.get_number_input("선택: ", 1, 6)  # 메뉴 번호를 1부터 6 사이의 숫자로 입력.
+            choice = self.get_number_input("선택: ", 1, 7)  # 메뉴 번호를 1부터 7 사이의 숫자로 입력.
             if choice is None:  # 입력 중단 등으로 메뉴 번호를 받지 못한 경우.
                 continue  # while 조건이 False가 되면 루프가 끝나고, 아니면 다시 메뉴로 돌아갑니다.
             self.handle_menu_choice(choice)  # 사용자가 고른 번호에 맞는 기능을 실행합니다.
@@ -195,6 +196,8 @@ class QuizGame:
         elif choice == 5: 
             self.show_best_score()  # 최고 점수와 플레이 횟수를 출력합니다.
         elif choice == 6: 
+            self.show_score_history()  # 저장된 게임 기록을 출력합니다.
+        elif choice == 7: 
             self.exit_program()  # 저장 후 종료하는 메서드를 호출합니다.
 ###################### 메뉴 기능 관련 끝 ######################
 
@@ -337,14 +340,13 @@ class QuizGame:
             return  # 표시할 점수가 없으므로 메서드를 끝냅니다.
         print(f"\n[점수] 최고 점수: {self.best_score}점")  # 현재까지 저장된 최고 점수를 출력합니다.
         print(f"총 플레이 횟수: {self.play_count}회") 
-        self.show_score_history()  # 모든 게임 기록도 함께 보여 줍니다.
 ############################# 점수 확인 관련 끝 ######################
 
     def show_score_history(self) -> None:  # 지금까지의 모든 게임 기록을 출력하는 메서드입니다.
         if not self.score_history:  # 기록이 하나도 없으면 안내만 보여 줍니다.
-            print("[기록] 아직 저장된 게임 기록이 없습니다.")
+            print("\n[기록] 아직 저장된 게임 기록이 없습니다.")
             return
-        print("[기록] 게임 기록 히스토리")
+        print("\n[기록] 게임 기록 히스토리")
         print("----------------------------------------")
         for index, item in enumerate(self.score_history, start=1):  # 저장된 기록을 처음부터 끝까지 출력합니다.
             played_at = item.get("played_at", "-")
