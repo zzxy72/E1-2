@@ -54,20 +54,31 @@
             ],
             "answer": 1,
             "hint": "프로그램을 껐다 켜도 정보를 기억하게 해 줍니다."
-        },
-        {
-            "question": "퀴즈. 테스트 입니다?",
-            "choices": [
-                "111",
-                "222",
-                "333",
-                "444"
-            ],
-            "answer": 3,
-            "hint": "세 번째 선택지가 정답입니다."
         }
     ],
-    "best_score": 0,
-    "play_count": 0,
-    "score_history": []
+    "best_score": 26,
+    "play_count": 3,
+    "score_history": [
+        {
+            "played_at": "2026-04-14 17:55:22",
+            "question_count": 3,
+            "correct_count": 3,
+            "hint_count": 2,
+            "score": 26
+        },
+        {
+            "played_at": "2026-04-14 17:56:40",
+            "question_count": 2,
+            "correct_count": 1,
+            "hint_count": 2,
+            "score": 8
+        },
+        {
+            "played_at": "2026-04-14 17:57:17",
+            "question_count": 2,
+            "correct_count": 0,
+            "hint_count": 2,
+            "score": 0
+        }
+    ]
 }

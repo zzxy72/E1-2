@@ -211,6 +211,8 @@ class QuizGame:
         if question_count is None:
             return
         selected_quizzes = random.sample(self.quizzes, question_count)  # 원하는 개수만큼 무작위로 뽑습니다.
+        # random.sample(리스트, 개수)는 원본 리스트를 바꾸지 않고, 중복 없이 필요한 개수만 뽑아 새 리스트로 돌려줍니다.
+        # 여기서는 self.quizzes 전체에서 question_count개를 무작위로 골라, 매번 다른 순서로 문제를 내기 위해 사용합니다.
         print(f"\n[퀴즈] 퀴즈를 시작합니다. (랜덤 {question_count}문제)") 
         score = 0  # 이번 라운드에서 얻은 총점을 저장합니다.
         correct_count = 0  # 정답 개수를 따로 세어 결과를 알기 쉽게 보여 줍니다.
