@@ -46,8 +46,8 @@ E1-2/
 │  ├─ main.py
 │  ├─ quiz.py
 │  ├─ quiz_game.py
-│  ├─ state.json
 │  └─ state copy.json
+├─ state.json
 └─ 요구사항/
    └─ Readme.md
 ```
@@ -56,12 +56,12 @@ E1-2/
 
 `state.json`은 게임의 저장 상태를 담는 파일입니다.
 
-- 경로: `src/state.json`
+- 경로: 프로젝트 루트 `state.json`
 - 역할: 퀴즈 목록, 최고 점수, 플레이 횟수를 저장
 - 인코딩: UTF-8
 
-`src/quiz_game.py`에서는 `Path(__file__).resolve().parent / "state.json"`으로 이 파일을 직접 찾습니다.  
-즉, 실행 위치가 어디든 `src` 폴더 기준으로 저장과 불러오기가 이루어집니다.
+`src/quiz_game.py`에서는 `Path(__file__).resolve().parent.parent / "state.json"`으로 이 파일을 직접 찾습니다.  
+즉, 실행 위치가 어디든 프로젝트 루트 기준으로 저장과 불러오기가 이루어집니다.
 
 스키마는 아래 구조를 따릅니다.
 

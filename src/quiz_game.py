@@ -17,7 +17,7 @@ class QuizGame:
     #  - save_state(): 현재 상태를 state.json에 저장
     #  - load_state(): state.json에서 이전 상태를 불러오기
 
-    STATE_FILE = Path(__file__).resolve().parent / "state.json"  # src/state.json을 사용합니다.
+    STATE_FILE = Path(__file__).resolve().parent.parent / "state.json"  # 프로젝트 루트의 state.json을 사용합니다.
 
     def __init__(self) -> None:  # 객체가 처음 만들어질 때 기본값과 저장 데이터를 준비합니다.
         self.quizzes: list[Quiz] = []  # 퀴즈 목록을 담을 빈 리스트를 먼저 준비합니다.
