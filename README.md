@@ -1,21 +1,21 @@
 # E1-2. Git과 함께하는 Python 첫 발자국
 
-이 저장소는 터미널에서 실행하는 퀴즈 게임 과제입니다.  
-사용자는 문제를 풀고, 새 문제를 추가하고, 저장된 기록을 다시 불러올 수 있습니다.
+터미널에서 실행하는 콘솔 퀴즈 게임입니다.  
+문제를 풀고, 문제를 추가하고, 목록을 확인하고, 점수와 게임 기록을 저장할 수 있습니다.
 
 ## 프로젝트 개요
 
 - Python으로 만든 콘솔 기반 퀴즈 게임입니다.
-- 퀴즈 데이터, 최고 점수, 플레이 횟수는 파일에 저장됩니다.
-- 프로그램은 다시 실행해도 이전 상태를 이어서 사용할 수 있습니다.
+- 퀴즈 데이터, 최고 점수, 플레이 횟수, 게임 기록은 `state.json`에 저장됩니다.
+- 프로그램을 다시 실행해도 이전에 추가한 퀴즈와 기록을 이어서 사용할 수 있습니다.
 
 ## 퀴즈 주제와 선정 이유
 
 퀴즈 주제는 `Python 기초 문법과 JSON 저장`입니다.
 
-- 문자열, 리스트, 조건문, 반복문처럼 입문 단계에서 꼭 익혀야 하는 개념을 중심으로 구성했습니다.
-- 프로그램을 직접 구현하면서 배운 문법을 바로 문제로 확인할 수 있어 학습 효과가 좋습니다.
-- 핵심 기능이 `state.json` 저장이기 때문에, JSON을 왜 쓰는지도 자연스럽게 연결됩니다.
+- 문자열, 리스트, 조건문, 반복문 같은 입문 핵심 문법을 중심으로 구성했습니다.
+- 직접 만든 프로그램으로 배운 문법을 바로 확인할 수 있어 이해가 쉽습니다.
+- 파일 저장과 불러오기를 통해 JSON이 왜 필요한지도 자연스럽게 연결됩니다.
 
 ## 실행 방법
 
@@ -34,7 +34,8 @@ python main.py
 - 퀴즈 추가
 - 퀴즈 목록 확인
 - 퀴즈 삭제
-- 최고 점수 확인
+- 점수 확인
+- 점수 확인 시 게임 기록 확인
 - 종료 시 현재 상태 저장
 - 입력 중단 또는 잘못된 입력 처리
 
@@ -43,27 +44,28 @@ python main.py
 ```text
 E1-2/
 ├─ README.md
-├─ docs/
-│  ├─ system-architecture.md
-│  └─ 설명팁.md
 ├─ main.py
 ├─ quiz.py
 ├─ quiz_game.py
-├─ state copy.json
 ├─ state.json
+├─ state copy.json
+├─ docs/
+│  ├─ system-architecture.md
+│  ├─ 설명팁.md
+│  └─ screenshots/
 └─ 요구사항/
    └─ Readme.md
 ```
 
 ## 데이터 파일 설명
 
-`state.json`은 게임의 저장 상태를 담는 파일입니다.
+`state.json`은 게임 상태를 저장하는 파일입니다.
 
 - 경로: 프로젝트 루트 `state.json`
-- 역할: 퀴즈 목록, 최고 점수, 플레이 횟수를 저장
+- 역할: 퀴즈 목록, 최고 점수, 플레이 횟수, 게임 기록 저장
 - 인코딩: UTF-8
 
-`quiz_game.py`에서는 `Path(__file__).resolve().parent / "state.json"`으로 이 파일을 직접 찾습니다.  
+`quiz_game.py`에서는 `Path(__file__).resolve().parent / "state.json"`으로 이 파일을 찾습니다.  
 즉, 실행 위치가 어디든 프로젝트 루트 기준으로 저장과 불러오기가 이루어집니다.
 
 스키마는 아래 구조를 따릅니다.
@@ -100,3 +102,41 @@ E1-2/
 - `best_score`: 최고 점수
 - `play_count`: 누적 플레이 횟수
 - `score_history`: 모든 게임 기록 목록
+
+## 실행 화면 스크린샷 위치
+
+아래 경로에 캡처 이미지를 넣으면 제출할 때 찾기 쉽습니다.
+
+- `docs/screenshots/menu.png`
+- `docs/screenshots/play.png`
+- `docs/screenshots/add_quiz.png`
+- `docs/screenshots/list.png`
+- `docs/screenshots/delete_quiz.png`
+- `docs/screenshots/score.png`
+- `docs/screenshots/history.png`
+- `docs/screenshots/git-log.png`
+- `docs/screenshots/python-version.png`
+
+## Git 정리 방식
+
+커밋 메시지는 규칙에 맞춰 `feat:`, `fix:`, `docs:`, `refactor:`, `test:` 형태로 정리했습니다.
+
+- 기능 추가는 `feat`
+- 버그 수정은 `fix`
+- 문서 수정은 `docs`
+- 기능 변화 없는 구조 정리는 `refactor`
+- 실행 확인은 `test`
+
+히스토리 정리 과정에서는 기존 커밋 메시지를 규칙에 맞게 다시 쓰고, 최종적으로 원격 저장소에 반영했습니다.
+
+## 제출 체크리스트
+
+- 프로젝트 개요
+- 퀴즈 주제 선정 이유
+- 실행 방법
+- 기능 목록
+- 파일 구조
+- 데이터 파일 설명
+- 실행 결과 스크린샷 위치
+- `git log --oneline --graph` 결과 스크린샷
+- 개발 환경 스크린샷
