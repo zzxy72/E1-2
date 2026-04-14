@@ -28,9 +28,14 @@ python main.py
 ## 기능 목록
 
 - 퀴즈 풀기
+- 퀴즈 풀기 시 문제 수 선택
+- 퀴즈 풀기 시 문제 순서 랜덤 출제
+- 퀴즈 풀기 중 힌트 보기
 - 퀴즈 추가
 - 퀴즈 목록 확인
+- 퀴즈 삭제
 - 최고 점수 확인
+- 게임 기록 히스토리 확인
 - 종료 시 현재 상태 저장
 - 입력 중단 또는 잘못된 입력 처리
 
@@ -70,11 +75,21 @@ E1-2/
     {
       "question": "문제 문장",
       "choices": ["선택지 1", "선택지 2", "선택지 3", "선택지 4"],
-      "answer": 1
+      "answer": 1,
+      "hint": "풀이 중 볼 수 있는 힌트"
     }
   ],
   "best_score": 0,
-  "play_count": 0
+  "play_count": 0,
+  "score_history": [
+    {
+      "played_at": "2026-04-14 15:30:00",
+      "question_count": 3,
+      "correct_count": 2,
+      "hint_count": 1,
+      "score": 18
+    }
+  ]
 }
 ```
 
@@ -82,5 +97,7 @@ E1-2/
 - `question`: 문제 문장
 - `choices`: 4개의 선택지 목록
 - `answer`: 정답 번호, `1`부터 `4`까지의 정수
+- `hint`: 풀이 중 보여 줄 힌트
 - `best_score`: 최고 점수
 - `play_count`: 누적 플레이 횟수
+- `score_history`: 모든 게임 기록 목록
