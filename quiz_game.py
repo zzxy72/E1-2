@@ -1,7 +1,7 @@
 # json 모듈은 파이썬 데이터를 JSON 파일로 저장하거나 다시 읽어 올 때 사용합니다.
 import json  # state.json 파일을 읽고 쓰기 위해 사용합니다.
 import random  # 퀴즈를 랜덤 순서로 출제할 때 사용합니다.
-from datetime import datetime  # 게임 기록에 날짜와 시간을 남길 때 사용합니다.
+import time  # 현재 시각을 문자열로 만들 때 사용합니다.
 from pathlib import Path  # 파일 경로를 객체처럼 다루기 위해 사용합니다.
 
 # Quiz 클래스는 퀴즈 한 문제를 표현하므로 게임 전체에서 꼭 필요합니다.
@@ -247,8 +247,9 @@ class QuizGame:
     # 한 번의 퀴즈 풀이가 끝났을 때 결과를 정리하는 메서드입니다.
     def finish_round(self, score: int, total_questions: int, correct_count: int, hint_count: int) -> None:  
         self.play_count += 1  # 퀴즈를 끝까지 한 번 완료했으므로 플레이 횟수를 1 늘립니다.
+        current_time = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())  # 현재 시간을 사람이 읽기 쉬운 문자열로 만듭니다.
         history_entry = {
-            "played_at": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),  # 기록이 언제 만들어졌는지 저장합니다.
+            "played_at": current_time,  # 기록이 언제 만들어졌는지 저장합니다.
             "question_count": total_questions,
             "correct_count": correct_count,
             "hint_count": hint_count,
