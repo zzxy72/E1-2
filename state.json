@@ -54,10 +54,21 @@
             ],
             "answer": 1,
             "hint": "프로그램을 껐다 켜도 정보를 기억하게 해 줍니다."
+        },
+        {
+            "question": "문제추가 1 테스트 입니다.",
+            "choices": [
+                "111111",
+                "2번 선택지.",
+                "3번 입니다.",
+                "44444"
+            ],
+            "answer": 3,
+            "hint": "삼세"
         }
     ],
-    "best_score": 26,
-    "play_count": 3,
+    "best_score": 56,
+    "play_count": 4,
     "score_history": [
         {
             "played_at": "2026-04-14 17:55:22",
@@ -79,6 +90,13 @@
             "correct_count": 0,
             "hint_count": 2,
             "score": 0
+        },
+        {
+            "played_at": "2026-04-14 18:12:00",
+            "question_count": 6,
+            "correct_count": 6,
+            "hint_count": 2,
+            "score": 56
         }
     ]
 }
