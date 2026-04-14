@@ -64,7 +64,6 @@ E1-2/
 - 경로: 프로젝트 루트 `state.json`
 - 역할: 퀴즈 목록, 최고 점수, 플레이 횟수, 게임 기록 저장
 - 인코딩: UTF-8
-- 제출할 때는 마지막 실행 상태를 그대로 두는 것을 권장합니다.
 
 `quiz_game.py`에서는 `Path(__file__).resolve().parent / "state.json"`으로 이 파일을 찾습니다.  
 즉, 실행 위치가 어디든 프로젝트 루트 기준으로 저장과 불러오기가 이루어집니다.
@@ -105,18 +104,8 @@ E1-2/
 - `score_history`: 모든 게임 기록 목록
 
 ## 실행 화면 스크린샷 위치
-
-아래 경로에 캡처 이미지를 넣으면 제출할 때 찾기 쉽습니다.
-
-- `docs/screenshots/menu.png`
-- `docs/screenshots/play.png` - 퀴즈 시작 화면과 결과 요약이 보이도록 캡처
-- `docs/screenshots/add_quiz.png`
-- `docs/screenshots/list.png`
-- `docs/screenshots/delete_quiz.png`
-- `docs/screenshots/score.png`
-- `docs/screenshots/history.png` - 점수 확인 화면에 기록이 함께 보이면 생략 가능
-- `docs/screenshots/git-log.png`
-- `docs/screenshots/python-version.png` - 개발 환경 캡처를 함께 넣는 파일
+- `docs/screenshots/play.png`
+- `docs/screenshots/python-version.png`
 
 ## Git 정리 방식
 
@@ -130,14 +119,5 @@ E1-2/
 
 히스토리 정리 과정에서는 기존 커밋 메시지를 규칙에 맞게 다시 쓰고, 최종적으로 원격 저장소에 반영했습니다.
 
-## 제출 체크리스트
+- `git log --oneline --graph` 결과 스크린샷 : docs/screenshots/git-log.png
 
-- 프로젝트 개요
-- 퀴즈 주제 선정 이유
-- 실행 방법
-- 기능 목록
-- 파일 구조
-- 데이터 파일 설명
-- 실행 결과 스크린샷 위치
-- `git log --oneline --graph` 결과 스크린샷
-- 개발 환경 스크린샷
