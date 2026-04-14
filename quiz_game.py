@@ -210,7 +210,9 @@ class QuizGame:
         )
         if question_count is None:
             return
-        selected_quizzes = random.sample(self.quizzes, question_count)  # 문제를 랜덤으로 뽑아 순서를 섞습니다.
+        selected_quizzes = list(self.quizzes)  # 원본 퀴즈 목록을 건드리지 않기 위해 복사본을 만듭니다.
+        random.shuffle(selected_quizzes)  # 복사본의 순서를 무작위로 섞습니다.
+        selected_quizzes = selected_quizzes[:question_count]  # 원하는 문제 수만큼 앞에서 잘라 사용합니다.
         print(f"\n[퀴즈] 퀴즈를 시작합니다. (랜덤 {question_count}문제)") 
         score = 0  # 이번 라운드에서 얻은 총점을 저장합니다.
         correct_count = 0  # 정답 개수를 따로 세어 결과를 알기 쉽게 보여 줍니다.
