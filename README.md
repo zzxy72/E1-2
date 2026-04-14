@@ -22,7 +22,7 @@
 프로젝트 루트에서 아래 명령을 실행합니다.
 
 ```bash
-python src/main.py
+python main.py
 ```
 
 ## 기능 목록
@@ -42,11 +42,10 @@ E1-2/
 ├─ docs/
 │  ├─ system-architecture.md
 │  └─ 설명팁.md
-├─ src/
-│  ├─ main.py
-│  ├─ quiz.py
-│  ├─ quiz_game.py
-│  └─ state copy.json
+├─ main.py
+├─ quiz.py
+├─ quiz_game.py
+├─ state copy.json
 ├─ state.json
 └─ 요구사항/
    └─ Readme.md
@@ -60,7 +59,7 @@ E1-2/
 - 역할: 퀴즈 목록, 최고 점수, 플레이 횟수를 저장
 - 인코딩: UTF-8
 
-`src/quiz_game.py`에서는 `Path(__file__).resolve().parent.parent / "state.json"`으로 이 파일을 직접 찾습니다.  
+`quiz_game.py`에서는 `Path(__file__).resolve().parent / "state.json"`으로 이 파일을 직접 찾습니다.  
 즉, 실행 위치가 어디든 프로젝트 루트 기준으로 저장과 불러오기가 이루어집니다.
 
 스키마는 아래 구조를 따릅니다.
