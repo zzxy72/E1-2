@@ -1,5 +1,7 @@
 # json 모듈은 파이썬 데이터를 JSON 파일로 저장하거나 다시 읽어 올 때 사용합니다.
 import json  # state.json 파일을 읽고 쓰기 위해 사용합니다.
+import random  # 퀴즈를 랜덤 순서로 출제할 때 사용합니다.
+from datetime import datetime  # 게임 기록에 날짜와 시간을 남길 때 사용합니다.
 from pathlib import Path  # 파일 경로를 객체처럼 다루기 위해 사용합니다.
 
 # Quiz 클래스는 퀴즈 한 문제를 표현하므로 게임 전체에서 꼭 필요합니다.
@@ -13,16 +15,21 @@ class QuizGame:
     #  - play_quiz(): 퀴즈를 출제하고 채점 결과를 정리
     #  - add_quiz(): 사용자가 새 퀴즈를 추가
     #  - list_quizzes(): 현재 퀴즈 목록을 화면에 출력
+    #  - delete_quiz(): 등록된 퀴즈를 삭제
     #  - show_best_score(): 최고 점수와 플레이 횟수 확인
+    #  - show_score_history(): 모든 게임 기록 확인
     #  - save_state(): 현재 상태를 state.json에 저장
     #  - load_state(): state.json에서 이전 상태를 불러오기
 
     STATE_FILE = Path(__file__).resolve().parent / "state.json"  # 프로젝트 루트의 state.json을 사용합니다.
+    POINTS_PER_QUESTION = 10  # 한 문제를 맞히면 얻는 기본 점수입니다.
+    HINT_PENALTY = 2  # 힌트를 사용했을 때 차감할 점수입니다.
 
     def __init__(self) -> None:  # 객체가 처음 만들어질 때 기본값과 저장 데이터를 준비합니다.
         self.quizzes: list[Quiz] = []  # 퀴즈 목록을 담을 빈 리스트를 먼저 준비합니다.
         self.best_score = 0  # 최고 점수는 처음에는 0점으로 시작합니다.
         self.play_count = 0  # 몇 번 플레이했는지 세는 값도 0으로 시작합니다.
+        self.score_history: list[dict[str, object]] = []  # 모든 게임 기록을 차례대로 저장합니다.
         self.is_running = True  # 게임 루프를 계속 돌릴지 결정하는 값은 처음에 True입니다.
         self.load_state()  # 저장된 파일이 있으면 불러오고, 없으면 기본 퀴즈를 준비합니다.
 # 5.기본 퀴즈 데이터 
@@ -32,26 +39,31 @@ class QuizGame:
                 question="Python에서 문자열 자료형의 이름은 무엇인가요?",  
                 choices=["str", "int", "list", "bool"],  
                 answer=1, 
+                hint="파이썬에서 글자 하나나 여러 글자를 담는 자료형입니다.",
             ),  
             Quiz(  
                 question="if 문은 주로 어떤 상황에서 사용하나요?", 
                 choices=["조건에 따라 다른 동작을 할 때", "무조건 같은 동작만 할 때", "파일만 읽을 때", "주석만 작성할 때"], 
                 answer=1,  
+                hint="조건이 참인지 거짓인지에 따라 갈림길을 만드는 문법입니다.",
             ),  
             Quiz(  
                 question="list 자료형의 특징으로 가장 알맞은 것은 무엇인가요?", 
                 choices=["순서가 있고 여러 값을 저장할 수 있다", "항상 숫자만 저장할 수 있다", "반드시 4개 값만 들어간다", "한 번 만들면 바꿀 수 없다"], 
                 answer=1, 
+                hint="대괄호로 만들고 순서가 있는 여러 값을 담을 수 있습니다.",
             ), 
             Quiz( 
                 question="for 문은 보통 무엇을 반복할 때 사용하나요?", 
                 choices=["정해진 횟수나 목록을 차례대로 처리할 때", "컴퓨터를 종료할 때", "정답을 무조건 맞힐 때", "파일 이름을 바꿀 때만"], 
                 answer=1, 
+                hint="반복 횟수나 목록이 미리 정해져 있을 때 잘 어울립니다.",
             ),  
             Quiz(  
                 question="JSON 파일을 이 프로젝트에서 사용하는 가장 큰 이유는 무엇인가요?", 
                 choices=["프로그램을 다시 실행해도 데이터를 남기기 위해", "화면 색을 바꾸기 위해", "파이썬 설치를 대신하기 위해", "키보드를 연결하기 위해"], 
                 answer=1, 
+                hint="프로그램을 껐다 켜도 정보를 기억하게 해 줍니다.",
             ),  
         ] 
 ############## 기본 퀴즈 데이터 끝 ######################
@@ -62,13 +74,15 @@ class QuizGame:
             "quizzes": [quiz.to_dict() for quiz in self.quizzes],  # 모든 Quiz 객체를 딕셔너리로 바꿔 quizzes 키에 담습니다.
             "best_score": self.best_score,  # 현재 최고 점수.
             "play_count": self.play_count,  # 총 플레이 횟수.
+            "score_history": list(self.score_history),  # 모든 게임 기록을 저장합니다.
         } 
 
     def load_state(self) -> None:  # state.json 파일에서 저장된 데이터를 읽어 오는 메서드입니다.
         if not self.STATE_FILE.exists():  # 저장 파일이 아직 없다면.
             self.quizzes = self.get_default_quizzes()  # 기본 퀴즈 5개를 메모리에 준비합니다.
             self.best_score = 0  # 최고 점수, 플레이 기록 아직 없으므로 0으로 둡니다.
-            self.play_count = 0  
+            self.play_count = 0
+            self.score_history = []
             print("\n[안내] 저장 파일이 없어 기본 퀴즈로 시작합니다.")
             self.save_state()  # 바로 state.json 파일을 만들어 다음 실행에서도 사용할 수 있게 합니다.
             return 
@@ -81,6 +95,10 @@ class QuizGame:
             self.quizzes = [Quiz.from_dict(item) for item in raw_quizzes]  # 읽어 온 각 퀴즈 딕셔너리를 Quiz 객체로 바꿉니다.
             self.best_score = int(data.get("best_score", 0))  
             self.play_count = int(data.get("play_count", 0))  
+            raw_history = data.get("score_history", [])
+            if not isinstance(raw_history, list):
+                raise ValueError("score_history 값은 리스트여야 합니다.")
+            self.score_history = [entry for entry in raw_history if isinstance(entry, dict)]
             if not self.quizzes:  # 파일은 있었지만 퀴즈가 하나도 없는 경우를 따로 처리합니다.
                 print("\n[주의] 저장된 퀴즈가 없어 기본 퀴즈를 다시 준비합니다.")  # 기본 퀴즈로 복구함을 안내합니다.
                 self.quizzes = self.get_default_quizzes()  # 기본 퀴즈를 다시 메모리에 채워 넣습니다.
@@ -92,6 +110,7 @@ class QuizGame:
             self.quizzes = self.get_default_quizzes()  # 문제가 생긴 경우에도 게임이 동작하도록 기본 퀴즈를 넣습니다.
             self.best_score = 0  # 잘못된 점수 데이터는 버리고 0부터 다시 시작합니다.
             self.play_count = 0  # 플레이 횟수도 0부터 다시 시작합니다.
+            self.score_history = []
             self.save_state()  # 복구된 내용을 state.json 파일에 다시 저장합니다.
 
     def save_state(self) -> None:  # 현재 게임 상태를 state.json 파일에 저장하는 메서드입니다.
@@ -150,15 +169,16 @@ class QuizGame:
         print("1. 퀴즈 풀기") 
         print("2. 퀴즈 추가") 
         print("3. 퀴즈 목록") 
-        print("4. 점수 확인")  
-        print("5. 종료")  
+        print("4. 퀴즈 삭제")
+        print("5. 점수 확인")  
+        print("6. 종료")  
         print("========================================") 
 
     def run(self) -> None:  # 프로그램 전체를 반복 실행하는 메인 루프 메서드입니다.
         print("\n[시작] 퀴즈 게임을 시작합니다.")  
         while self.is_running:  # 종료를 선택하기 전까지 메뉴를 계속 보여 주기 위해 반복.
             self.show_menu()  # 현재 사용할 수 있는 메뉴를 화면에 출력합니다.
-            choice = self.get_number_input("선택: ", 1, 5)  # 메뉴 번호를 1부터 5 사이의 숫자로 입력.
+            choice = self.get_number_input("선택: ", 1, 6)  # 메뉴 번호를 1부터 6 사이의 숫자로 입력.
             if choice is None:  # 입력 중단 등으로 메뉴 번호를 받지 못한 경우.
                 continue  # while 조건이 False가 되면 루프가 끝나고, 아니면 다시 메뉴로 돌아갑니다.
             self.handle_menu_choice(choice)  # 사용자가 고른 번호에 맞는 기능을 실행합니다.
@@ -171,8 +191,10 @@ class QuizGame:
         elif choice == 3: 
             self.list_quizzes()  # 현재 저장된 퀴즈 목록을 출력합니다.
         elif choice == 4:  
-            self.show_best_score()  # 최고 점수와 플레이 횟수를 출력합니다.
+            self.delete_quiz()  # 등록된 퀴즈를 삭제합니다.
         elif choice == 5: 
+            self.show_best_score()  # 최고 점수와 플레이 횟수를 출력합니다.
+        elif choice == 6: 
             self.exit_program()  # 저장 후 종료하는 메서드를 호출합니다.
 ###################### 메뉴 기능 관련 끝 ######################
 
@@ -181,27 +203,61 @@ class QuizGame:
         if not self.quizzes:  # 퀴즈가 하나도 없으면 게임을 진행할 수 없으므로 먼저 검사합니다.
             print("\n[주의] 등록된 퀴즈가 없어 퀴즈를 시작할 수 없습니다.")  
             return 
-        print(f"\n[퀴즈] 퀴즈를 시작합니다. (총 {len(self.quizzes)}문제)") 
-        score = 0  # 이번 라운드에서 맞힌 문제 수를 저장할 변수를 0으로 시작합니다.
-        for index, quiz in enumerate(self.quizzes, start=1):  # 퀴즈 목록을 앞에서부터 하나씩 꺼내며 번호도 함께 만듭니다.
+        question_count = self.get_number_input(
+            f"\n[퀴즈] 몇 문제를 풀까요? (1-{len(self.quizzes)}): ",
+            1,
+            len(self.quizzes),
+        )
+        if question_count is None:
+            return
+        selected_quizzes = random.sample(self.quizzes, question_count)  # 문제를 랜덤으로 뽑아 순서를 섞습니다.
+        print(f"\n[퀴즈] 퀴즈를 시작합니다. (랜덤 {question_count}문제)") 
+        score = 0  # 이번 라운드에서 얻은 총점을 저장합니다.
+        correct_count = 0  # 정답 개수를 따로 세어 결과를 알기 쉽게 보여 줍니다.
+        hint_count = 0  # 힌트를 사용한 횟수도 함께 기록합니다.
+        for index, quiz in enumerate(selected_quizzes, start=1):  # 뽑힌 퀴즈를 하나씩 출제합니다.
             print("\n----------------------------------------")  
             quiz.display(index)  # 현재 문제 번호와 문제 내용을 화면에 출력합니다.
-            answer = self.get_number_input("정답 입력 (1-4): ", 1, 4)  
-            if answer is None:  # 입력 중단으로 답을 받지 못했다면 안전하게 현재 기능을 마칩니다.
-                return  # 이후 처리는 하지 않고 메서드를 종료합니다.
-            if quiz.is_correct(answer):  # 사용자의 답이 정답인지 확인합니다.
-                score += 1  # 정답이라면 점수를 1 올립니다.
-                print("[정답] 맞았습니다.")  
-            else:  # 정답이 아닌 경우 이 블록이 실행됩니다.
-                correct_text = quiz.get_correct_choice_text()  # 정답 번호에 해당하는 선택지 문장을 가져옵니다.
-                print(f"[오답] 정답은 {quiz.answer}번: {correct_text}") 
-        self.finish_round(score, len(self.quizzes))  # 모든 문제를 다 풀었다면 결과를 정리하고 저장합니다.
+            hint_used = False  # 현재 문제에서 힌트를 보았는지 기억합니다.
+            while self.is_running:
+                answer = self.get_number_input("정답 입력 (1-4, 힌트는 0): ", 0, 4)
+                if answer is None:  # 입력 중단으로 답을 받지 못했다면 안전하게 현재 기능을 마칩니다.
+                    return  # 이후 처리는 하지 않고 메서드를 종료합니다.
+                if answer == 0:  # 0을 누르면 힌트를 보여 줍니다.
+                    if hint_used:  # 힌트는 한 문제에서 한 번만 보여 줍니다.
+                        print("[안내] 이미 힌트를 확인했습니다.") 
+                        continue
+                    print(f"[힌트] {quiz.get_hint_text()}")  # Quiz 객체에 저장된 힌트를 보여 줍니다.
+                    hint_used = True
+                    hint_count += 1
+                    continue
+                if quiz.is_correct(answer):  # 사용자의 답이 정답인지 확인합니다.
+                    correct_count += 1
+                    question_score = self.POINTS_PER_QUESTION  # 기본 점수를 먼저 정합니다.
+                    if hint_used:  # 힌트를 사용한 문제는 점수를 조금 깎습니다.
+                        question_score -= self.HINT_PENALTY
+                    score += question_score  # 최종 점수를 누적합니다.
+                    print(f"[정답] 맞았습니다. (+{question_score}점)")  
+                else:  # 정답이 아닌 경우 이 블록이 실행됩니다.
+                    correct_text = quiz.get_correct_choice_text()  # 정답 번호에 해당하는 선택지 문장을 가져옵니다.
+                    print(f"[오답] 정답은 {quiz.answer}번: {correct_text}") 
+                break
+        self.finish_round(score, len(selected_quizzes), correct_count, hint_count)  # 모든 문제를 다 풀었다면 결과를 정리하고 저장합니다.
 
     # 한 번의 퀴즈 풀이가 끝났을 때 결과를 정리하는 메서드입니다.
-    def finish_round(self, score: int, total_questions: int) -> None:  
+    def finish_round(self, score: int, total_questions: int, correct_count: int, hint_count: int) -> None:  
         self.play_count += 1  # 퀴즈를 끝까지 한 번 완료했으므로 플레이 횟수를 1 늘립니다.
+        history_entry = {
+            "played_at": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),  # 기록이 언제 만들어졌는지 저장합니다.
+            "question_count": total_questions,
+            "correct_count": correct_count,
+            "hint_count": hint_count,
+            "score": score,
+        }
+        self.score_history.append(history_entry)  # 이번 게임 기록을 히스토리에 추가합니다.
         print("\n========================================") 
-        print(f"[결과] {total_questions}문제 중 {score}문제 정답") 
+        print(f"[결과] {total_questions}문제 중 {correct_count}문제 정답") 
+        print(f"[점수] 총점: {score}점") 
         print("========================================")  
         if score > self.best_score:  
             self.best_score = score  # 더 높은 점수라면 최고 점수를 새 값으로 갱신합니다.
@@ -226,8 +282,11 @@ class QuizGame:
         answer = self.get_number_input("정답 번호 (1-4): ", 1, 4)  # 정답 번호를 1~4 사이 숫자로 입력받습니다.
         if answer is None:  # 입력 중단으로 정답 번호를 받지 못한 경우를 검사합니다.
             return  # 현재 기능을 멈추고 메뉴로 돌아갑니다.
+        hint = self.get_non_empty_text("힌트: ")  # 풀이 중 보여 줄 힌트를 입력받습니다.
+        if hint is None:
+            return
         try:  # Quiz 객체를 만드는 과정에서 값 검증 오류가 날 수 있으므로 try를 사용합니다.
-            new_quiz = Quiz(question=question, choices=choices, answer=answer)  # 입력받은 값으로 새 Quiz 객체를 만듭니다.
+            new_quiz = Quiz(question=question, choices=choices, answer=answer, hint=hint)  # 입력받은 값으로 새 Quiz 객체를 만듭니다.
         except ValueError as error:  # 빈 문제나 잘못된 선택지처럼 검증 실패가 발생하면 여기로 들어옵니다.
             print(f"\n[주의] 퀴즈를 만드는 중 문제가 발생했습니다: {error}")  # 왜 추가에 실패했는지 쉽게 알려 줍니다.
             return  # 잘못된 데이터는 저장하지 않고 메서드를 끝냅니다.
@@ -248,6 +307,25 @@ class QuizGame:
         print("----------------------------------------")  
 ########################### 퀴즈 목록 관련 끝 ######################
 
+# 8-1. 퀴즈 삭제
+    def delete_quiz(self) -> None:  # 등록된 퀴즈를 번호로 선택해 삭제하는 메서드입니다.
+        if not self.quizzes:  # 삭제할 퀴즈가 없으면 바로 종료합니다.
+            print("\n[주의] 아직 등록된 퀴즈가 없습니다.")
+            return
+        self.list_quizzes()  # 먼저 목록을 보여 주어 어떤 문제를 지울지 확인합니다.
+        quiz_number = self.get_number_input("삭제할 퀴즈 번호: ", 1, len(self.quizzes))
+        if quiz_number is None:
+            return
+        selected_quiz = self.quizzes[quiz_number - 1]  # 1번부터 시작한 번호를 리스트 인덱스로 바꿉니다.
+        confirm = self.get_number_input(f"'{selected_quiz.question}' 문제를 삭제할까요? (1. 예 2. 아니오): ", 1, 2)
+        if confirm is None or confirm == 2:
+            print("[안내] 삭제를 취소했습니다.")
+            return
+        del self.quizzes[quiz_number - 1]  # 선택한 퀴즈를 목록에서 제거합니다.
+        self.save_state()  # 삭제 결과를 파일에 바로 저장합니다.
+        print("[완료] 퀴즈가 삭제되었습니다.")
+########################### 퀴즈 삭제 관련 끝 ######################
+
 # 9. 점수 확인  ---  finish_round 메서드에서 점수와 플레이 횟수를 업데이트하고 저장하기 때문에,
 #             show_best_score에서는 단순히 현재 저장된 최고 점수와 플레이 횟수를 보여 주는 역할만 합니다.
     def show_best_score(self) -> None:  # 최고 점수와 플레이 정보를 확인하는 메서드입니다.
@@ -256,7 +334,23 @@ class QuizGame:
             return  # 표시할 점수가 없으므로 메서드를 끝냅니다.
         print(f"\n[점수] 최고 점수: {self.best_score}점")  # 현재까지 저장된 최고 점수를 출력합니다.
         print(f"총 플레이 횟수: {self.play_count}회") 
+        self.show_score_history()  # 모든 게임 기록도 함께 보여 줍니다.
 ############################# 점수 확인 관련 끝 ######################
+
+    def show_score_history(self) -> None:  # 지금까지의 모든 게임 기록을 출력하는 메서드입니다.
+        if not self.score_history:  # 기록이 하나도 없으면 안내만 보여 줍니다.
+            print("[기록] 아직 저장된 게임 기록이 없습니다.")
+            return
+        print("[기록] 게임 기록 히스토리")
+        print("----------------------------------------")
+        for index, item in enumerate(self.score_history, start=1):  # 저장된 기록을 처음부터 끝까지 출력합니다.
+            played_at = item.get("played_at", "-")
+            question_count = item.get("question_count", 0)
+            correct_count = item.get("correct_count", 0)
+            hint_count = item.get("hint_count", 0)
+            score = item.get("score", 0)
+            print(f"{index}. {played_at} | {question_count}문제 | 정답 {correct_count}개 | 힌트 {hint_count}회 | {score}점")
+        print("----------------------------------------")
 
 
     def exit_program(self) -> None:  # 프로그램을 정상적으로 종료할 때 사용하는 메서드입니다.
