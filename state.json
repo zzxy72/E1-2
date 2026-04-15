@@ -54,9 +54,35 @@
             ],
             "answer": 1,
             "hint": "프로그램을 껐다 켜도 정보를 기억하게 해 줍니다."
+        },
+        {
+            "question": "1234",
+            "choices": [
+                "1",
+                "2",
+                "3",
+                "4"
+            ],
+            "answer": 1,
+            "hint": "1111"
         }
     ],
-    "best_score": 0,
-    "play_count": 0,
-    "score_history": []
+    "best_score": 10,
+    "play_count": 2,
+    "score_history": [
+        {
+            "played_at": "2026-04-15 17:47:05",
+            "question_count": 2,
+            "correct_count": 1,
+            "hint_count": 1,
+            "score": 8
+        },
+        {
+            "played_at": "2026-04-15 17:48:07",
+            "question_count": 1,
+            "correct_count": 1,
+            "hint_count": 0,
+            "score": 10
+        }
+    ]
 }
