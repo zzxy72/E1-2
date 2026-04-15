@@ -48,7 +48,6 @@ E1-2/
 ├─ quiz.py
 ├─ quiz_game.py
 ├─ state.json
-├─ state copy.json
 ├─ docs/
 │  ├─ system-architecture.md
 │  ├─ 설명팁.md
